@@ -1,5 +1,14 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { FiHeart, FiSearch, FiShoppingBag, FiUser } from "react-icons/fi";
+import {
+  FiHeart,
+  FiMenu,
+  FiSearch,
+  FiShoppingBag,
+  FiUser,
+} from "react-icons/fi";
+
+import MobileMenu from "./MobileMenu";
 
 const navigationItems = [
   {
@@ -29,70 +38,99 @@ const navigationItems = [
 ];
 
 function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  function openMobileMenu() {
+    setIsMobileMenuOpen(true);
+  }
+
+  function closeMobileMenu() {
+    setIsMobileMenuOpen(false);
+  }
+
   return (
-    <nav className="bg-surface">
-      <div className="mx-auto flex h-20 max-w-[1440px] items-center px-4 sm:px-6 lg:px-8">
-        <Link
-          to="/"
-          className="shrink-0 font-display text-2xl font-semibold tracking-wide text-accent"
-          aria-label="Go to home page"
-        >
-          LOGO
-        </Link>
-
-        <div className="ml-12 hidden items-center gap-8 lg:flex">
-          {navigationItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `relative text-sm font-medium transition-colors duration-300 ${
-                  isActive
-                    ? "text-accent"
-                    : "text-text-secondary hover:text-text-primary"
-                }`
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
-
-        <div className="ml-auto flex items-center gap-1">
+    <>
+      <nav className="bg-surface" aria-label="Main navigation">
+        <div className="mx-auto flex h-16 max-w-[1440px] items-center px-4 sm:h-18 sm:px-6 lg:h-20 lg:px-8">
           <button
             type="button"
-            className="rounded-full p-3 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary"
-            aria-label="Search"
+            onClick={openMobileMenu}
+            className="mr-1 flex shrink-0 items-center justify-center rounded-full p-2.5 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary sm:mr-2 lg:hidden"
+            aria-label="Open navigation menu"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
-            <FiSearch size={20} />
+            <FiMenu size={22} />
           </button>
 
           <Link
-            to="/profile"
-            className="rounded-full p-3 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary"
-            aria-label="Account"
+            to="/"
+            className="shrink-0 font-display text-xl font-semibold tracking-wide text-accent sm:text-2xl"
+            aria-label="Go to home page"
           >
-            <FiUser size={20} />
+            LOGO
           </Link>
 
-          <Link
-            to="/wishlist"
-            className="rounded-full p-3 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary"
-            aria-label="Wishlist"
-          >
-            <FiHeart size={20} />
-          </Link>
+          <div className="ml-8 hidden items-center gap-5 lg:flex xl:ml-12 xl:gap-8">
+            {navigationItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `relative whitespace-nowrap text-sm font-medium transition-colors duration-300 ${
+                    isActive
+                      ? "text-accent"
+                      : "text-text-secondary hover:text-text-primary"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
 
-          <Link
-            to="/cart"
-            className="rounded-full p-3 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary"
-            aria-label="Shopping bag"
-          >
-            <FiShoppingBag size={20} />
-          </Link>
+          <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
+            <button
+              type="button"
+              className="flex items-center justify-center rounded-full p-2.5 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary sm:p-3"
+              aria-label="Search"
+            >
+              <FiSearch size={20} />
+            </button>
+
+            <Link
+              to="/profile"
+              className="hidden items-center justify-center rounded-full p-3 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary sm:flex"
+              aria-label="Account"
+            >
+              <FiUser size={20} />
+            </Link>
+
+            <Link
+              to="/wishlist"
+              className="hidden items-center justify-center rounded-full p-3 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary md:flex"
+              aria-label="Wishlist"
+            >
+              <FiHeart size={20} />
+            </Link>
+
+            <Link
+              to="/cart"
+              className="flex items-center justify-center rounded-full p-2.5 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary sm:p-3"
+              aria-label="Shopping bag"
+            >
+              <FiShoppingBag size={20} />
+            </Link>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={closeMobileMenu}
+        navigationItems={navigationItems}
+      />
+    </>
   );
 }
 

@@ -9,6 +9,7 @@ import {
 } from "react-icons/fi";
 
 import MobileMenu from "./MobileMenu";
+import SearchOverlay from "./SearchOverlay";
 
 const navigationItems = [
   {
@@ -39,6 +40,7 @@ const navigationItems = [
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   function openMobileMenu() {
     setIsMobileMenuOpen(true);
@@ -46,6 +48,14 @@ function Navbar() {
 
   function closeMobileMenu() {
     setIsMobileMenuOpen(false);
+  }
+
+  function openSearch() {
+    setIsSearchOpen(true);
+  }
+
+  function closeSearch() {
+    setIsSearchOpen(false);
   }
 
   return (
@@ -92,8 +102,11 @@ function Navbar() {
           <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
             <button
               type="button"
+              onClick={openSearch}
               className="flex items-center justify-center rounded-full p-2.5 text-text-secondary transition-colors duration-300 hover:bg-surface-elevated hover:text-text-primary sm:p-3"
-              aria-label="Search"
+              aria-label="Open search"
+              aria-expanded={isSearchOpen}
+              aria-controls="search-overlay"
             >
               <FiSearch size={20} />
             </button>
@@ -129,6 +142,11 @@ function Navbar() {
         isOpen={isMobileMenuOpen}
         onClose={closeMobileMenu}
         navigationItems={navigationItems}
+      />
+
+      <SearchOverlay
+        isOpen={isSearchOpen}
+        onClose={closeSearch}
       />
     </>
   );

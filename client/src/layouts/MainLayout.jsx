@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import Header from "../components/layout/Header/Header";
+import Footer from "../components/layout/Footer/Footer";
 
 function MainLayout() {
   return (
@@ -11,11 +12,7 @@ function MainLayout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-border-subtle bg-surface px-6 py-6">
-        <p className="text-center text-sm text-text-muted">
-          Premium Fashion Store
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }

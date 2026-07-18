@@ -4,20 +4,22 @@ function ProductInfo({ product }) {
   return (
     <div className="space-y-3 p-4">
       {/* Brand */}
-      <p className="text-sm font-medium uppercase tracking-wider text-text-muted">
+      <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
         {product.brand}
       </p>
 
       {/* Product Name */}
-      <h3 className="line-clamp-2 text-lg font-semibold text-text-primary">
+      <h3 className="line-clamp-2 text-lg font-semibold leading-7 text-text-primary">
         {product.name}
       </h3>
 
       {/* Rating */}
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 text-yellow-400">
-          <FiStar className="fill-current" size={16} />
-          <span className="text-sm font-medium">{product.rating}</span>
+          <FiStar size={16} className="fill-current" />
+          <span className="text-sm font-medium text-text-primary">
+            {product.rating}
+          </span>
         </div>
 
         <span className="text-sm text-text-muted">
@@ -31,7 +33,7 @@ function ProductInfo({ product }) {
           ₹{product.price}
         </span>
 
-        <span className="text-sm text-text-muted line-through">
+        <span className="text-sm line-through text-text-muted">
           ₹{product.oldPrice}
         </span>
       </div>

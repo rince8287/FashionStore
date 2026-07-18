@@ -14,7 +14,7 @@ function ProductCard({ product }) {
         bg-surface
         transition-all
         duration-300
-        hover:-translate-y-2
+        hover:-translate-y-2S
         hover:border-accent
         hover:shadow-2xl
       "

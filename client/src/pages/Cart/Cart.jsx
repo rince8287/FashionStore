@@ -1,38 +1,50 @@
-import { Link } from "react-router-dom";
-import { FiShoppingBag } from "react-icons/fi";
+import EmptyCart from "../../components/cart/EmptyCart";
+import CartItem from "../../components/cart/CartItem";
+import CartSummary from "../../components/cart/CartSummary";
+import { useCart } from "../../context/CartContext";
 
 function Cart() {
+  const { cartItems } = useCart();
+
+  // Empty Cart
+  if (cartItems.length === 0) {
+    return <EmptyCart />;
+  }
+
   return (
-    <section className="px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-      <div className="mx-auto max-w-[1440px]">
-        <p className="text-xs font-medium uppercase tracking-[0.25em] text-accent">
-          Your Selection
-        </p>
-
-        <h1 className="mt-3 font-display text-3xl font-semibold text-text-primary sm:text-4xl">
-          Shopping Bag
-        </h1>
-
-        <div className="mt-10 flex min-h-72 flex-col items-center justify-center rounded-2xl border border-border-subtle bg-surface px-6 py-12 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-surface-elevated text-accent">
-            <FiShoppingBag size={24} />
-          </div>
-
-          <h2 className="mt-5 font-display text-2xl font-semibold text-text-primary">
-            Your bag is empty
-          </h2>
-
-          <p className="mt-3 max-w-md text-sm leading-6 text-text-secondary sm:text-base">
-            Explore our latest collection and add your favourite pieces to your
-            bag.
+    <section className="bg-brand-bg py-10 sm:py-12 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Heading */}
+        <div className="mb-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">
+            Your Shopping Bag
           </p>
 
-          <Link
-            to="/new-in"
-            className="mt-6 inline-flex min-h-12 items-center justify-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-brand-bg transition-colors duration-300 hover:bg-accent-hover"
-          >
-            Explore New Arrivals
-          </Link>
+          <h1 className="mt-3 text-4xl font-bold text-text-primary">
+            Cart
+          </h1>
+
+          <p className="mt-3 text-text-secondary">
+            Review your selected products before checkout.
+          </p>
+        </div>
+
+        {/* Content */}
+        <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
+          {/* Left Side - Cart Items */}
+          <div className="space-y-6">
+            {cartItems.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+              />
+            ))}
+          </div>
+
+          {/* Right Side - Summary */}
+          <div>
+            <CartSummary />
+          </div>
         </div>
       </div>
     </section>

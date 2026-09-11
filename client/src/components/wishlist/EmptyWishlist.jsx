@@ -26,4 +26,4 @@ function EmptyWishlist() {
   );
 }
 
-export default EmptyWishlist;
+export default EmptyWishlist;   

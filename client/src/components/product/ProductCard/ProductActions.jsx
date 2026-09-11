@@ -1,79 +1,196 @@
 import { Link } from "react-router-dom";
-import { FiHeart } from "react-icons/fi";
-import { FaHeart } from "react-icons/fa";
+
+import {
+  FiShoppingBag,
+  FiArrowUpRight,
+} from "react-icons/fi";
 
 import { useCart } from "../../../context/CartContext";
-import { useWishlist } from "../../../context/WishlistContext";
 
 function ProductActions({ product }) {
-  const { addToCart } = useCart();
-
   const {
-    toggleWishlist,
-    isWishlisted,
-    wishlistItems,
-  } = useWishlist();
+    addToCart,
+    loading: cartLoading,
+  } = useCart();
 
-  const wishlisted = isWishlisted(product?.id);
+  const productId =
+    product?._id ||
+    product?.id;
 
-  const handleAddToCart = () => {
-    addToCart(product);
-  };
+  if (!product || !productId) {
+    return null;
+  }
 
-  const handleWishlist = () => {
-    console.log("Wishlist Clicked");
-    console.log("Product:", product);
+  // =========================================================
+  // STOCK
+  // =========================================================
 
-    if (!product) {
-      console.error("Product is undefined");
+  const inStock =
+    Number(product?.stock || 0) >
+      0 ||
+    product?.sizes?.some(
+      (item) =>
+        Number(item?.stock || 0) >
+        0
+    );
+
+  // =========================================================
+  // ADD TO CART
+  // =========================================================
+
+  const handleAddToCart = async (
+    event
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!inStock || cartLoading) {
       return;
     }
 
-    toggleWishlist(product);
+    try {
+      await addToCart(
+        product,
+        1
+      );
+    } catch (error) {
+      console.error(
+        "Add To Cart Error:",
+        error
+      );
+    }
   };
 
-  console.log("Wishlist Items:", wishlistItems);
+  // =========================================================
+  // COMPONENT
+  // =========================================================
 
   return (
-    <div className="space-y-3 px-4 pb-4">
-      {product?.stock ? (
-        <>
-          <button
-            type="button"
-            onClick={handleWishlist}
-            className={`flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-all duration-300 ${
-              wishlisted
-                ? "border-red-500 bg-red-500 text-white"
-                : "border-border-subtle text-text-primary hover:border-red-500 hover:text-red-500"
-            }`}
-          >
-            {wishlisted ? <FaHeart size={18} /> : <FiHeart size={18} />}
-            {wishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
-          </button>
+    <div
+      className="
+        mt-auto
+        border-t
+        border-border-subtle
+        px-3
+        pb-3
+        pt-3
+        sm:px-4
+        sm:pb-4
+      "
+    >
+      {!inStock ? (
+        <button
+          type="button"
+          disabled
+          className="
+            flex
+            h-9
+            w-full
+            cursor-not-allowed
+            items-center
+            justify-center
+            rounded-lg
+            bg-surface-elevated
+            px-3
+            text-[10px]
+            font-semibold
+            text-text-muted
+            sm:h-10
+            sm:text-xs
+          "
+        >
+          Currently Unavailable
+        </button>
+      ) : (
+        <div
+          className="
+            grid
+            grid-cols-[1fr_auto]
+            gap-2
+          "
+        >
+          {/* ADD TO CART */}
 
           <button
             type="button"
             onClick={handleAddToCart}
-            className="w-full rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-black"
+            disabled={cartLoading}
+            className="
+              flex
+              h-10
+              items-center
+              justify-center
+              gap-2
+              rounded-lg
+              bg-accent
+              px-3
+              text-xs
+              font-bold
+              text-black
+              transition-all
+              duration-200
+              hover:bg-accent-hover
+              active:scale-[0.98]
+              disabled:cursor-not-allowed
+              disabled:opacity-60
+              sm:h-10
+              sm:text-sm
+            "
           >
-            Add To Cart
+            <FiShoppingBag
+              size={15}
+            />
+
+            {cartLoading
+              ? "Adding..."
+              : "Add to Cart"}
           </button>
+
+          {/* BUY */}
 
           <Link
             to="/checkout"
-            onClick={handleAddToCart}
-            className="flex w-full items-center justify-center rounded-xl border border-accent px-4 py-3 text-sm font-semibold text-accent"
+            onClick={async (
+              event
+            ) => {
+              event.stopPropagation();
+
+              try {
+                await addToCart(
+                  product,
+                  1
+                );
+              } catch (error) {
+                console.error(
+                  "Buy Now Error:",
+                  error
+                );
+              }
+            }}
+            className="
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              rounded-lg
+              border
+              border-accent/50
+              text-accent
+              transition-all
+              duration-200
+              hover:bg-accent
+              hover:text-black
+              active:scale-95
+              sm:w-11
+            "
+            aria-label="Buy now"
           >
-            Buy Now
+            <FiArrowUpRight
+              size={17}
+            />
           </Link>
-        </>
-      ) : (
-        <button
-          disabled
-          className="w-full cursor-not-allowed rounded-xl bg-gray-700 px-4 py-3 text-sm font-semibold text-gray-300"
-        >
-          Out of Stock
-        </button>
+        </div>
       )}
     </div>
   );

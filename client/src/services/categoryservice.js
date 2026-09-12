@@ -4,8 +4,15 @@ import axios from "axios";
 // CATEGORY API
 // ====================================================
 
+// Vite environment variable
+// Local:  http://localhost:5000/api/v1
+// Vercel: https://fashionstore-g2az.onrender.com/api/v1
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000/api/v1";
+
 const CATEGORY_API = axios.create({
-  baseURL: "http://localhost:5000/api/v1/categories",
+  baseURL: `${API_URL}/categories`,
 
   headers: {
     "Content-Type": "application/json",

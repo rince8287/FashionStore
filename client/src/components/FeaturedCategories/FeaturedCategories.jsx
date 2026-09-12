@@ -8,6 +8,14 @@ import {
 
 import CategoryCard from "./CategoryCard";
 
+// =========================================================
+// API CONFIGURATION
+// =========================================================
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000/api/v1";
+
 function FeaturedCategories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +34,7 @@ function FeaturedCategories() {
         setError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/v1/categories"
+          `${API_URL}/categories`
         );
 
         const data = await response.json();
@@ -49,11 +57,15 @@ function FeaturedCategories() {
           setCategories(categoryList);
         }
       } catch (err) {
-        console.error("Fetch Categories Error:", err);
+        console.error(
+          "Fetch Categories Error:",
+          err
+        );
 
         if (isMounted) {
           setError(
-            err?.message || "Failed to load categories."
+            err?.message ||
+              "Failed to load categories."
           );
         }
       } finally {
@@ -79,7 +91,6 @@ function FeaturedCategories() {
       <section className="bg-brand-bg py-10 sm:py-12 lg:py-14">
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
 
-          {/* Header Skeleton */}
           <div className="mx-auto max-w-xl text-center">
             <div className="mx-auto h-3 w-28 animate-pulse rounded-full bg-surface-elevated" />
 
@@ -88,7 +99,6 @@ function FeaturedCategories() {
             <div className="mx-auto mt-3 h-3 w-full max-w-md animate-pulse rounded-full bg-surface-elevated" />
           </div>
 
-          {/* Cards Skeleton */}
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
             {[1, 2, 3, 4, 5].map((item) => (
               <div
@@ -146,9 +156,7 @@ function FeaturedCategories() {
   return (
     <section className="relative overflow-hidden bg-brand-bg py-11 sm:py-13 lg:py-15">
 
-      {/* =====================================================
-          SUBTLE BACKGROUND GLOW
-      ===================================================== */}
+      {/* SUBTLE BACKGROUND GLOW */}
 
       <div
         className="
@@ -166,19 +174,15 @@ function FeaturedCategories() {
         "
       />
 
-      {/* =====================================================
-          CONTAINER
-      ===================================================== */}
+      {/* CONTAINER */}
 
       <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
 
-        {/* ===================================================
-            HEADER
-        =================================================== */}
+        {/* HEADER */}
 
         <div className="mx-auto max-w-[680px] text-center">
 
-          {/* Eyebrow */}
+          {/* EYEBROW */}
 
           <div
             className="
@@ -212,7 +216,7 @@ function FeaturedCategories() {
             </span>
           </div>
 
-          {/* Heading */}
+          {/* HEADING */}
 
           <h2
             className="
@@ -224,12 +228,12 @@ function FeaturedCategories() {
               text-text-primary
               sm:text-3xl
               lg:text-4xl
-          "
+            "
           >
             Find Your Perfect Style
           </h2>
 
-          {/* Description */}
+          {/* DESCRIPTION */}
 
           <p
             className="
@@ -249,9 +253,7 @@ function FeaturedCategories() {
           </p>
         </div>
 
-        {/* ===================================================
-            CATEGORY GRID
-        =================================================== */}
+        {/* CATEGORY GRID */}
 
         {categories.length > 0 ? (
           <div
@@ -287,10 +289,6 @@ function FeaturedCategories() {
             ))}
           </div>
         ) : (
-          /* =================================================
-             EMPTY STATE
-          ================================================= */
-
           <div className="mx-auto mt-8 max-w-md rounded-2xl border border-dashed border-border-subtle bg-surface px-6 py-10 text-center">
 
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent">
@@ -307,9 +305,7 @@ function FeaturedCategories() {
           </div>
         )}
 
-        {/* ===================================================
-            BOTTOM CTA
-        =================================================== */}
+        {/* BOTTOM CTA */}
 
         {categories.length > 0 && (
           <div className="mt-7 flex justify-center sm:mt-8">
@@ -331,7 +327,9 @@ function FeaturedCategories() {
                 sm:text-[11px]
               "
             >
-              <span>Explore all collections</span>
+              <span>
+                Explore all collections
+              </span>
 
               <FiArrowRight
                 size={13}
@@ -346,10 +344,7 @@ function FeaturedCategories() {
         )}
       </div>
 
-      {/* =====================================================
-          LOCAL ANIMATION
-          No separate CSS file required.
-      ===================================================== */}
+      {/* LOCAL ANIMATION */}
 
       <style>{`
         @keyframes categoryFadeUp {

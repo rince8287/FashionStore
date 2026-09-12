@@ -1,4 +1,4 @@
-import HeroSection from "../../components/home/HeroSection";
+import HeroSection from "../../components/Home/HeroSection";
 import FeaturedCategories from "../../components/FeaturedCategories/FeaturedCategories";
 import NewArrivals from "../../components/product/NewArrivals/NewArrivals";
 import TrendingProducts from "../../components/product/TrendingProducts/TrendingProducts";

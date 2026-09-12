@@ -47,7 +47,7 @@ import {
   createOrder,
 } from "../../services/orderService";
 
-import paymentService from "../../services/paymentService";
+import paymentService from "../../services/paymentservice";
 import couponService from "../../admin/services/couponService";
 
 // ==========================================================
